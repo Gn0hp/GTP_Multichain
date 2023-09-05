@@ -1,0 +1,23 @@
+APPENV="dev"
+[app]
+httpAddr="4040"
+grpcAddr="5050"
+storage="database"
+
+[database]
+host="localhost"
+port=5432
+user="postgres"
+password=""
+database="dev"
+[database.params]
+sslmode="disable"
+
+[logger]
+format="json" # [json | logfmt]
+level="info" #  [trace |debug | info | warn | error | fatal | panic]
+no_color=false
+full_timestamp=true
+
+[telemetry]
+address="8080"

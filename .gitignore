@@ -339,7 +339,7 @@ Package Control.user-ca-bundle
 oscrypto-ca-bundle.crt
 bh_unicode_properties.cache
 
-# Sublime-github package stores a github token in this file
+# Sublime-github pkg stores a github token in this file
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
 
@@ -425,6 +425,7 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+config.toml
 env/
 venv/
 ENV/
