@@ -34,6 +34,7 @@ func New(isDevEnv bool, logger logur.LoggerFacade) *mux.Router {
 	// user path start with /user
 	user := api.PathPrefix("/user").Subrouter()
 	user.HandleFunc("/signup", userHandler.Signup).Methods("POST")
+
 	//token := api.PathPrefix("/token").Subrouter()
 
 	return r
