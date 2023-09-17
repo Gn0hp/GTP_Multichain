@@ -48,8 +48,8 @@ func Middleware(logger logur.LoggerFacade) func(handler http.Handler) http.Handl
 					return
 				}
 				SetUserContext(r, *userDetail)
-				next.ServeHTTP(w, r)
 			}
+			next.ServeHTTP(w, r)
 		})
 	}
 }
@@ -88,7 +88,7 @@ func skipTokenCheck(url string) bool {
 	skipPath := []string{
 		"/api/v1/auth/login",
 		"/api/v1/auth/register",
-		"/api/v1/auth/refresh",
+		"/api/v1/health-check",
 		"/api/v1/liveness",
 	}
 	for _, str := range skipPath {

@@ -1,7 +1,9 @@
 package user_handlers
 
 import (
+	"encoding/json"
 	"eth_bsc_multichain/internal/repository"
+	"fmt"
 	"logur.dev/logur"
 	"net/http"
 )
@@ -19,8 +21,17 @@ func New(logger logur.LoggerFacade, registry repository.Registry) UserHandler {
 }
 
 func (u *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	decoder := json.NewDecoder(r.Body)
+	var data interface{}
+	err := decoder.Decode(&data)
+	u.logger.Info("Body: ", map[string]interface{}{
+		"body": data,
+	})
+	if err != nil {
+		_, _ = w.Write([]byte(fmt.Sprintf("Error decoding post body: %v", err)))
+	}
+	_, _ = w.Write([]byte(fmt.Sprintf("Data: %v", data)))
+
 }
 func (u *UserHandler) Login() {
 
