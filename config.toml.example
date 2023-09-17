@@ -1,5 +1,6 @@
 APPENV="dev"
 [app]
+port=8600
 httpAddr="4040"
 grpcAddr="5050"
 storage="database"
@@ -8,7 +9,7 @@ storage="database"
 host="localhost"
 port=5432
 user="postgres"
-password=""
+password="1036829"
 database="dev"
 [database.params]
 sslmode="disable"

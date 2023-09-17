@@ -1,5 +1,5 @@
 # GTP Multichain
-Planning: Go_GorillaMux, VueJs, Solidity, Vyper, Rust, Eth, Bsc, NEAR, Postgres
+Planning: Go_GorillaMux, VueJs, Solidity, Vyper, Rust, Eth(Sepolia), Bsc(testnet), NEAR(testnet), Postgres
 ## Introduction
 Bridge Token among Ethereums - Binance Smart Chain - Near Protocol
 
