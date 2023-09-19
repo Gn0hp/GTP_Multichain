@@ -13,12 +13,13 @@ type DB struct {
 	gormDb *gorm.DB
 }
 
-func New(logger logur.LoggerFacade, config postgres2.Config) *DB {
+func NewPostgresDb(logger logur.LoggerFacade, config postgres2.Config) *DB {
 	logger.Info("Connecting to database...")
 	db, err := postgres2.NewConnector(config)
 	if err != nil {
 		panic(fmt.Sprintf("db(new): connect database failed, error: %v", err))
 	}
+	logger.Info("Database connected!")
 	_, _ = db.DB()
 
 	internal.RegisterApp(string(pkg.MySqlConnectorAppName), db)

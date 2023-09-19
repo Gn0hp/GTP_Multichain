@@ -3,7 +3,10 @@ package cmd
 import (
 	"context"
 	"eth_bsc_multichain/cmd/router"
+	db_service "eth_bsc_multichain/internal/service/db"
+	"eth_bsc_multichain/internal/service/db/redis"
 	"eth_bsc_multichain/pkg"
+	"eth_bsc_multichain/pkg/build_info"
 	"eth_bsc_multichain/pkg/config"
 	logger_pkg "eth_bsc_multichain/pkg/logger"
 	"fmt"
@@ -18,7 +21,14 @@ import (
 	"time"
 )
 
+var (
+	version    string
+	commitHash string
+	buildDate  string
+)
+
 func server() error {
+	ctx := context.TODO()
 	v, f := viper.New(), pflag.NewFlagSet(string(pkg.APIAppName), pflag.ExitOnError)
 	cfg := config.New(v, f)
 
@@ -41,9 +51,21 @@ func server() error {
 		AllowedHeaders:   allowHeaders,
 		AllowCredentials: true,
 	})
+	// r Setup
+	buildInfo := build_info.New(version, commitHash, buildDate)
+	db := db_service.NewPostgresDb(logger, cfg.Database)
+	redisClient, err := redis.New(ctx,
+		fmt.Sprintf("%v:%v",
+			viper.GetString("redis.host"),
+			viper.GetString("redis.port")),
+		logger)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
 	srv := &http.Server{
 		Addr:         addr,
-		Handler:      c.Handler(router.New(logger)),
+		Handler:      c.Handler(router.New(logger, buildInfo, db, redisClient)),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 	}

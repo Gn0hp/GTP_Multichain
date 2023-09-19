@@ -1,13 +1,21 @@
 package system_handlers
 
-import "logur.dev/logur"
+import (
+	"eth_bsc_multichain/pkg/build_info"
+	"eth_bsc_multichain/pkg/middlewares"
+	"net/http"
+)
 
 type SystemHandler struct {
-	logger logur.LoggerFacade
+	buildInfo build_info.BuildInfo
 }
 
-func New(logger logur.LoggerFacade) SystemHandler {
+func New(buildInfo build_info.BuildInfo) SystemHandler {
 	return SystemHandler{
-		logger: logger,
+		buildInfo: buildInfo,
 	}
+}
+
+func (s *SystemHandler) Liveness(w http.ResponseWriter, r *http.Request) {
+	middlewares.WriteResponse(&w, http.StatusOK, s.buildInfo)
 }

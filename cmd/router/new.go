@@ -1,20 +1,27 @@
 package router
 
 import (
+	system_handlers "eth_bsc_multichain/internal/handlers/system-handlers"
 	user_handlers "eth_bsc_multichain/internal/handlers/user-handlers"
+	"eth_bsc_multichain/internal/repository"
+	database "eth_bsc_multichain/internal/service/db"
+	"eth_bsc_multichain/internal/service/db/redis"
 	"eth_bsc_multichain/pkg/auth"
+	"eth_bsc_multichain/pkg/build_info"
 	"eth_bsc_multichain/pkg/middlewares"
 	"github.com/gorilla/mux"
 	"logur.dev/logur"
 	"net/http"
 )
 
-func New(logger logur.LoggerFacade) *mux.Router {
+func New(logger logur.LoggerFacade, buildInfo build_info.BuildInfo, db *database.DB, client *redis.Client) *mux.Router {
 	r := mux.NewRouter()
 
 	r.Use(auth.Middleware(logger))
 	r.Use(middlewares.Middleware(logger))
 
+	repo := repository.New(logger, db, client)
+	authService := auth.New()
 	// root path start with /api/v1
 	api := r.PathPrefix("/api/v1").Subrouter()
 
@@ -26,11 +33,14 @@ func New(logger logur.LoggerFacade) *mux.Router {
 		return
 	}).Methods("GET")
 	// user path start with /user
-	userHandler := user_handlers.New(logger, nil)
+	userHandler := user_handlers.New(logger, repo)
+	systemHandler := system_handlers.New(buildInfo)
+
+	api.HandleFunc("/liveness", systemHandler.Liveness).Methods("GET")
+
 	user := api.PathPrefix("/auth").Subrouter()
-
 	user.HandleFunc("/register", userHandler.Signup).Methods("POST")
-
+	user.HandleFunc("/login", userHandler.Login(&authService)).Methods("POST")
 	//token := api.PathPrefix("/token").Subrouter()
 
 	return r

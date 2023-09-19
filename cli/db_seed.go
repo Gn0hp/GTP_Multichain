@@ -41,13 +41,12 @@ func (s *MigrateService) Init() {
 	s.logger = log
 	s.gormDb = gormDb
 }
-
 func main() {
 	migrateService := MigrateService{}
 	migrateService.Init()
 
 	tables := []interface{}{
-		entities.Token{},
+		entities.User{},
 	}
 
 	err := migrateService.gormDb.AutoMigrate(tables...)

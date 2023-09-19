@@ -63,7 +63,7 @@ func (c Client) HSet(ctx context.Context, hashKey string, data interface{}) erro
 }
 
 // Exists checks if a key exists in cache
-func (c Client) Exist(ctx context.Context, key string) (bool, error) {
+func (c Client) Exists(ctx context.Context, key string) (bool, error) {
 	isExist, err := c.redis.Exists(ctx, key).Result()
 	if err != nil {
 		if err == redis.Nil {

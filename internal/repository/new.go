@@ -2,6 +2,7 @@ package repository
 
 import (
 	"eth_bsc_multichain/internal/service/db"
+	"eth_bsc_multichain/internal/service/db/redis"
 	"logur.dev/logur"
 )
 
@@ -15,18 +16,16 @@ type impl struct {
 	dbRepo    DatabaseRepo
 }
 
-func New(logger logur.LoggerFacade, db *db.DB) Registry {
+func New(logger logur.LoggerFacade, db *db.DB, redisClient *redis.Client) Registry {
 	return &impl{
 		dbRepo:    NewDbImpl(logger, db),
-		cacheRepo: NewCacheImpl(),
+		cacheRepo: NewCacheRepoImpl(redisClient),
 	}
 }
 func (i impl) Database() DatabaseRepo {
-	//TODO implement me
-	panic("implement me")
+	return i.dbRepo
 }
 
 func (i impl) Cache() CacheRepo {
-	//TODO implement me
-	panic("implement me")
+	return i.cacheRepo
 }
