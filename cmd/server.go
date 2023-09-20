@@ -72,9 +72,7 @@ func server() error {
 	// Create a channel to receive server error
 	serverErr := make(chan error, 1)
 	go func() {
-		logger.Info("Running server at: ", map[string]interface{}{
-			"address": addr,
-		})
+		logger.Info(fmt.Sprintf("Starting server at %s", addr))
 		serverErr <- srv.ListenAndServe()
 	}()
 

@@ -13,7 +13,6 @@ type Client struct {
 }
 
 func New(ctx context.Context, address string, logger logur.LoggerFacade) (*Client, error) {
-	logger.Info("Connecting to redis ...")
 	r := redis.NewClient(&redis.Options{
 		Addr: address,
 	})

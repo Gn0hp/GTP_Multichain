@@ -16,7 +16,9 @@ var (
 	ErrUserNotFoundInCtx = errors.New("user not found in context")
 )
 
-const AccessTokenExpiry = time.Hour
+const AccessTokenExpiry = time.Minute // for development
+//const AccessTokenExpiry = time.Hour
+
 const (
 	AccessTokenKey        = "access_token"
 	IssuerAddressClaimKey = "iss"

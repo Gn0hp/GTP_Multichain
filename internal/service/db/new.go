@@ -14,7 +14,6 @@ type DB struct {
 }
 
 func NewPostgresDb(logger logur.LoggerFacade, config postgres2.Config) *DB {
-	logger.Info("Connecting to database...")
 	db, err := postgres2.NewConnector(config)
 	if err != nil {
 		panic(fmt.Sprintf("db(new): connect database failed, error: %v", err))
