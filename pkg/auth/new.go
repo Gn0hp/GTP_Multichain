@@ -21,7 +21,9 @@ func (i AuthenticatorImpl) GenerateAccessToken(address, id string, r *http.Reque
 }
 
 func New() Authenticator {
-	return AuthenticatorImpl{}
+	return AuthenticatorImpl{
+		JwtService: *newJwtService(),
+	}
 }
 
 func Middleware(logger logur.LoggerFacade) func(handler http.Handler) http.Handler {

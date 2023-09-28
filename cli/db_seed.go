@@ -47,6 +47,7 @@ func main() {
 
 	tables := []interface{}{
 		entities.User{},
+		entities.Transaction{},
 	}
 
 	err := migrateService.gormDb.AutoMigrate(tables...)

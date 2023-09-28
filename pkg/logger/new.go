@@ -37,3 +37,12 @@ func NewLogger(config Config) logur.LoggerFacade {
 func SetStandartLogger(logger logur.Logger) {
 	log.SetOutput(logur.NewLevelWriter(logger, logur.Info))
 }
+
+func DefaultConfig() Config {
+	return Config{
+		Format:        "logfmt",
+		Level:         "info",
+		NoColor:       false,
+		FullTimestamp: false,
+	}
+}

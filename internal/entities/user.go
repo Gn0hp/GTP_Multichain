@@ -12,7 +12,7 @@ type UserDto struct {
 	User
 }
 
-func NewDtO(u User) IEntity {
+func NewUserDtO(u User) IEntity {
 	return &UserDto{
 		User: u,
 	}

@@ -5,6 +5,7 @@ import (
 	"crypto/subtle"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -12,11 +13,8 @@ import (
 var secretKey string
 
 func init() {
-	if len(secretKey) == 0 {
-		sha256 := crypto.SHA256.New()
-		sha256.Write([]byte(fmt.Sprintf("%v_&_%v", time.Now().Unix(), time.Now().UnixNano())))
-		secretKey = string(sha256.Sum(nil))
-	}
+	genSecret()
+	logrus.Info("Init new jwt service")
 }
 
 type JwtService struct {
@@ -24,7 +22,16 @@ type JwtService struct {
 	secretKeyByte []byte
 }
 
+func genSecret() {
+	if len(secretKey) == 0 {
+		sha256 := crypto.SHA256.New()
+		sha256.Write([]byte(fmt.Sprintf("%v_&_%v", time.Now().Unix(), time.Now().UnixNano())))
+		secretKey = string(sha256.Sum(nil))
+	}
+}
+
 func newJwtService() *JwtService {
+	genSecret()
 	return &JwtService{
 		secretKey:     secretKey,
 		secretKeyByte: []byte(secretKey),

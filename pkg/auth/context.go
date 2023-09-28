@@ -16,7 +16,7 @@ var (
 	ErrUserNotFoundInCtx = errors.New("user not found in context")
 )
 
-const AccessTokenExpiry = time.Minute // for development
+const AccessTokenExpiry = time.Minute * 5 // for development
 //const AccessTokenExpiry = time.Hour
 
 const (

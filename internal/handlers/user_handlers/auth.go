@@ -11,6 +11,11 @@ import (
 	"strconv"
 )
 
+// Signup godoc
+// @Summary Signup
+// @Accept  json
+// @Method  POST
+// @Body   {object} UserDto (address, chainId)
 func (u *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var user entities.UserDto

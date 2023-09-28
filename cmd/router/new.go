@@ -1,8 +1,9 @@
 package router
 
 import (
-	system_handlers "eth_bsc_multichain/internal/handlers/system-handlers"
-	user_handlers "eth_bsc_multichain/internal/handlers/user-handlers"
+	system_handlers "eth_bsc_multichain/internal/handlers/system_handlers"
+	"eth_bsc_multichain/internal/handlers/transaction_handlers"
+	user_handlers "eth_bsc_multichain/internal/handlers/user_handlers"
 	"eth_bsc_multichain/internal/repository"
 	database "eth_bsc_multichain/internal/service/db"
 	"eth_bsc_multichain/internal/service/db/redis"
@@ -35,13 +36,15 @@ func New(logger logur.LoggerFacade, buildInfo build_info.BuildInfo, db *database
 	// user path start with /user
 	userHandler := user_handlers.New(logger, repo)
 	systemHandler := system_handlers.New(buildInfo)
+	transactionHandler := transaction_handlers.New(logger, repo)
 
 	api.HandleFunc("/liveness", systemHandler.Liveness).Methods("GET")
 
 	user := api.PathPrefix("/auth").Subrouter()
 	user.HandleFunc("/register", userHandler.Signup).Methods("POST")
 	user.HandleFunc("/login", userHandler.Login(&authService)).Methods("POST")
-	//token := api.PathPrefix("/token").Subrouter()
 
+	token := api.PathPrefix("/token").Subrouter()
+	token.HandleFunc("/balance", transactionHandler.GetBalance).Methods("GET")
 	return r
 }

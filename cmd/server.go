@@ -10,6 +10,7 @@ import (
 	"eth_bsc_multichain/pkg/config"
 	logger_pkg "eth_bsc_multichain/pkg/logger"
 	"fmt"
+	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
 	"github.com/rs/cors"
 	"github.com/spf13/pflag"
@@ -28,14 +29,21 @@ var (
 )
 
 func server() error {
+	err := godotenv.Load()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
 	ctx := context.TODO()
 	v, f := viper.New(), pflag.NewFlagSet(string(pkg.APIAppName), pflag.ExitOnError)
 	cfg := config.New(v, f)
 
 	// Create logger (first thing after configuration loading)
 	logger := logger_pkg.NewLogger(cfg.Log)
-	// Override the global standard library logger to make sure everything uses our logger
+	// Override the
+	//standard library logger to make sure everything uses our logger
 	logger_pkg.SetStandartLogger(logger)
+
 	logger.Info("") //TODO:  build INFO
 	addr := fmt.Sprintf(":%s", cfg.App.HttpAddress)
 
